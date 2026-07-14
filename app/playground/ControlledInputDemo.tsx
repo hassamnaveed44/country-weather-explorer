@@ -1,4 +1,4 @@
-// components/playground/ControlledInputDemo.tsx
+// app/playground/ControlledInputDemo.tsx
 "use client";
 
 import { useState } from "react";
