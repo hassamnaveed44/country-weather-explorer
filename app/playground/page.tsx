@@ -1,6 +1,7 @@
 // app/playground/page.tsx
 import CounterDemo from "@/app/playground/CounterDemo";
 import ControlledInputDemo from "@/app/playground/ControlledInputDemo";
+import TimerDemo from "@/app/playground/TimerDemo";
 
 export default function PlaygroundPage() {
   return (
@@ -20,6 +21,11 @@ export default function PlaygroundPage() {
       <section className="rounded-xl border bg-white p-6 shadow-sm">
         <h2 className="mb-4 text-xl font-semibold">2. Controlled Input</h2>
         <ControlledInputDemo />
+      </section>
+
+      <section className="rounded-xl border bg-white p-6 shadow-sm">
+        <h2 className="mb-4 text-xl font-semibold">3. useEffect Timer</h2>
+        <TimerDemo />
       </section>
     </div>
   );
