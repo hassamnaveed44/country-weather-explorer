@@ -1,5 +1,6 @@
 // app/playground/page.tsx
 import CounterDemo from "@/app/playground/CounterDemo";
+import ControlledInputDemo from "@/app/playground/ControlledInputDemo";
 
 export default function PlaygroundPage() {
   return (
@@ -14,6 +15,11 @@ export default function PlaygroundPage() {
       <section className="rounded-xl border bg-white p-6 shadow-sm">
         <h2 className="mb-4 text-xl font-semibold">1. useState Counter</h2>
         <CounterDemo />
+      </section>
+
+      <section className="rounded-xl border bg-white p-6 shadow-sm">
+        <h2 className="mb-4 text-xl font-semibold">2. Controlled Input</h2>
+        <ControlledInputDemo />
       </section>
     </div>
   );
