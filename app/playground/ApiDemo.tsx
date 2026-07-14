@@ -15,9 +15,19 @@ type FetchStatus = "idle" | "loading" | "success" | "empty" | "error";
 const COUNTRIES_API_URL =
   "https://api.worldbank.org/v2/country?format=json&per_page=20";
 
-// Demo coordinates: Islamabad, Pakistan — swap for any lat/long you like.
-const WEATHER_API_URL =
-  "https://api.open-meteo.com/v1/forecast?latitude=33.6844&longitude=73.0479&current_weather=true";
+// --- A small pool of cities to rotate through on each weather refresh ---
+const WEATHER_CITIES = [
+  { name: "Lahore", latitude: 31.5497, longitude: 74.3436 },
+  { name: "Islamabad", latitude: 33.6844, longitude: 73.0479 },
+  { name: "Karachi", latitude: 24.8607, longitude: 67.0011 },
+  { name: "Peshawar", latitude: 34.0151, longitude: 71.5249 },
+  { name: "Quetta", latitude: 30.1798, longitude: 66.975 },
+];
+
+function getRandomCity() {
+  const index = Math.floor(Math.random() * WEATHER_CITIES.length);
+  return WEATHER_CITIES[index];
+}
 
 export default function ApiDemo() {
   // --- Independent state machine #1: World Bank countries ---
@@ -65,12 +75,14 @@ export default function ApiDemo() {
     };
   }, [countryRefreshIndex]);
 
-  // --- Independent state machine #2: Open-Meteo weather ---
+  // --- Independent state machine #2: Open-Meteo weather (random city each refresh) ---
   const [weatherStatus, setWeatherStatus] = useState<FetchStatus>("idle");
   const [weather, setWeather] = useState<OpenMeteoResponse | null>(null);
   const [weatherRefreshIndex, setWeatherRefreshIndex] = useState(0);
+  const [weatherCity, setWeatherCity] = useState(WEATHER_CITIES[0]); // default: Lahore
 
   const retryWeather = useCallback(() => {
+    setWeatherCity(getRandomCity()); // pick a new random city on every refresh
     setWeatherRefreshIndex((prev) => prev + 1);
   }, []);
 
@@ -80,7 +92,8 @@ export default function ApiDemo() {
     const fetchWeather = async () => {
       setWeatherStatus("loading");
       try {
-        const res = await fetch(WEATHER_API_URL);
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${weatherCity.latitude}&longitude=${weatherCity.longitude}&current_weather=true`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
 
         const data: OpenMeteoResponse = await res.json();
@@ -106,7 +119,7 @@ export default function ApiDemo() {
     return () => {
       ignore = true;
     };
-  }, [weatherRefreshIndex]);
+  }, [weatherRefreshIndex, weatherCity]);
 
   return (
     <div className="space-y-8">
@@ -154,7 +167,7 @@ export default function ApiDemo() {
       {/* --- Weather block (Open-Meteo) --- */}
       <div>
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
-          Open-Meteo — Live Weather (Islamabad)
+          Open-Meteo — Live Weather ({weatherCity.name})
         </h3>
 
         {weatherStatus === "loading" && (
