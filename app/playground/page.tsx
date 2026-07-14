@@ -1,8 +1,10 @@
 // app/playground/page.tsx
+import { Suspense } from "react";
 import CounterDemo from "@/app/playground/CounterDemo";
 import ControlledInputDemo from "@/app/playground/ControlledInputDemo";
 import TimerDemo from "@/app/playground/TimerDemo";
 import ApiDemo from "@/app/playground/ApiDemo";
+import SearchParamDemo from "@/app/playground/SearchParamDemo";
 
 export default function PlaygroundPage() {
   return (
@@ -32,6 +34,13 @@ export default function PlaygroundPage() {
       <section className="rounded-xl border bg-white p-6 shadow-sm">
         <h2 className="mb-4 text-xl font-semibold">4. Open API Calling</h2>
         <ApiDemo />
+      </section>
+
+      <section className="rounded-xl border bg-white p-6 shadow-sm">
+        <h2 className="mb-4 text-xl font-semibold">5. Search Parameters</h2>
+        <Suspense fallback={<p className="text-sm text-gray-400">Loading...</p>}>
+          <SearchParamDemo />
+        </Suspense>
       </section>
     </div>
   );
