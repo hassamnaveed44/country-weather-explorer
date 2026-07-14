@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Country & Weather Explorer",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-gray-50 text-gray-900 antialiased">
         <Navbar />
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">{children}</main>
+        <Footer />
       </body>
     </html>
   );
